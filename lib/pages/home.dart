@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../models/category.dart';
 
 class HomePage extends StatefulWidget {
-   const HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -20,13 +20,15 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          header(),
-          categories(),
-          doctors(),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            header(),
+            categories(),
+            doctors(),
+          ],
+        ),
       ),
     );
   }
@@ -40,56 +42,56 @@ class _HomePageState extends State<HomePage> {
             top: 16,
             left: 16,
           ),
-          child: Text(
-            'Categories',
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 20,
-            )
-          ),
+          child: Text('Categories',
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 20,
+              )),
         ),
-        const SizedBox(height: 20,),
+        const SizedBox(
+          height: 20,
+        ),
         Container(
           height: 50,
           margin: const EdgeInsets.all(16),
           child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: (){
-                  for(var item in categoriesData) {
-                    item.isSelected = false;
-                  }
-                  categoriesData[index].isSelected = true;
-                  setState(() {});
-                },
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: categoriesData[index].isSelected ?
-                        const Color(0xff51ABFF).withOpacity(0.45):
-                        const Color(0xff050618).withOpacity(0.05),
-                        offset: const Offset(0, 4),
-                        blurRadius: 25
-                        )
-                      ],
-                    color: categoriesData[index].isSelected ? 
-                    const Color(0xff51ABFF) : Colors.white
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    for (var item in categoriesData) {
+                      item.isSelected = false;
+                    }
+                    categoriesData[index].isSelected = true;
+                    setState(() {});
+                  },
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                              color: categoriesData[index].isSelected
+                                  ? const Color(0xff61C17B).withOpacity(0.45)
+                                  : const Color(0xff050618).withOpacity(0.05),
+                              offset: const Offset(0, 4),
+                              blurRadius: 25)
+                        ],
+                        color: categoriesData[index].isSelected
+                            ? const Color(0xff61C17B)
+                            : Colors.white),
+                    child: SvgPicture.asset(
+                      categoriesData[index].vector,
+                      fit: BoxFit.none,
                     ),
-                   child: SvgPicture.asset(
-                    categoriesData[index].vector,
-                    fit: BoxFit.none,
                   ),
+                );
+              },
+              separatorBuilder: (context, index) => const SizedBox(
+                    width: 50,
                   ),
-              );
-            },
-            separatorBuilder: (context, index) =>  const SizedBox(width: 50,),
-            itemCount: categoriesData.length
-          ),
+              itemCount: categoriesData.length),
         )
       ],
     );
@@ -97,7 +99,7 @@ class _HomePageState extends State<HomePage> {
 
   Container header() {
     return Container(
-        color: const Color(0xff51A8FF),
+        color: const Color(0xff61C17B),
         width: double.infinity,
         height: 350,
         padding: const EdgeInsets.all(16),
@@ -157,95 +159,94 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.all(Radius.circular(50)))),
             )
           ],
-        )
-    );
+        ));
   }
 
   Widget doctors() {
     return ListView.separated(
-      shrinkWrap: true,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DetailPage(),)
-            );
-          },
-          child: Container(
-            height: 100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xff51ABFF).withOpacity(0.07),
-                  offset: const Offset(0,4),
-                  blurRadius: 20,
-                )
-              ]
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 105,
-                  decoration: BoxDecoration(
-                    color: doctorData[index].imageBox,
-                    borderRadius: BorderRadius.circular(16),
-                    image: DecorationImage(
-                      alignment: Alignment.bottomCenter,
-                      image: AssetImage(doctorData[index].image)
+        shrinkWrap: true,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        DetailPage(doctorModel: doctorData[index]),
+                  ));
+            },
+            child: Container(
+              height: 100,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xff61C17B).withOpacity(0.07),
+                      offset: const Offset(0, 4),
+                      blurRadius: 20,
                     )
+                  ]),
+              child: Row(
+                children: [
+                  Container(
+                    width: 105,
+                    decoration: BoxDecoration(
+                        color: doctorData[index].imageBox,
+                        borderRadius: BorderRadius.circular(16),
+                        image: DecorationImage(
+                            alignment: Alignment.bottomCenter,
+                            image: AssetImage(doctorData[index].image))),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        doctorData[index].name,
-                        style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        doctorData[index].specialties.first,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w300,
-                          fontSize: 12,
-                        ),
-                      ),
-                      const Spacer(),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                            size: 18,
+                  Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          doctorData[index].name,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
                           ),
-                          const SizedBox(width: 5,),
-                          Text(
-                            doctorData[index].score.toString(),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 12,
-                          )
+                        ),
+                        Text(
+                          doctorData[index].specialties.first,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 12,
+                          ),
+                        ),
+                        const Spacer(),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 18,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(doctorData[index].score.toString(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 12,
+                                ))
+                          ],
                         )
-                        ],
-                      )
-                  ],
-                ),
-                )
-              ],
-            )
-          ),
-        );
-      },
-      separatorBuilder: (context, index) => const SizedBox(height: 15,),
-      itemCount: doctorData.length
-    );
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+        separatorBuilder: (context, index) => const SizedBox(
+              height: 15,
+            ),
+        itemCount: doctorData.length);
   }
 }
